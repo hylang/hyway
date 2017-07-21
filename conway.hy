@@ -17,19 +17,18 @@
         (!= (, (+ x dx) (+ y dy)) (, x y)))))
 
 (defn step [world]
-  (let [[new-world (.copy grid.Torus world)]]
-    (for [x (range new-world.width)]
-      (for [y (range new-world.height)]
-	(let [[cell (get! new-world x y)]
-	      [ns (neighbours world x y)]]
-                (if (= cell 1)
-                    (cond [(< ns 2) (set! new-world x y 0)]
-                          [(or (= ns 2) (= ns 3)) (set! new-world x y 1)]
-                          [(> ns 3) (set! new-world x y 0)])
-                    (cond [(= ns 3) (set! new-world x y 1)]
-                          [True (set! new-world x y 0)])))))
-    new-world))
-
+  (setv new-world (.copy grid.Torus world))
+  (for [x (range new-world.width)]
+    (for [y (range new-world.height)]
+      (setv cell (get! new-world x y)
+            ns (neighbours world x y))
+      (if (= cell 1)
+        (cond [(< ns 2) (set! new-world x y 0)]
+              [(or (= ns 2) (= ns 3)) (set! new-world x y 1)]
+              [(> ns 3) (set! new-world x y 0)])
+        (cond [(= ns 3) (set! new-world x y 1)]
+              [True (set! new-world x y 0)]))))
+    new-world)
 
 
 ;; Create a glider...
